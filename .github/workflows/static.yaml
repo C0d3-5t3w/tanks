@@ -60,30 +60,31 @@ jobs:
             "compilerOptions": {
               "target": "ES6",
               "module": "None",
-              "outDir": "./pkg/static/js",
-              "rootDir": "./pkg/static/ts",
+              "outDir": "./static/js",
+              "rootDir": "./static/ts",
               "strict": true,
               "esModuleInterop": true,
               "skipLibCheck": true,
               "forceConsistentCasingInFileNames": true
             },
-            "include": ["./pkg/static/ts/**/*"]
+            "include": ["./static/ts/**/*"]
           }' > tsconfig.json
       
       - name: List TypeScript files
         run: |
           echo "Found TypeScript files:"
-          find ./pkg/static/ts -name "*.ts" | sort
+          find ./static/ts -name "*.ts" | sort
       
       - name: Compile TypeScript
         run: |
-          mkdir -p pkg/static/js
+          mkdir -p static/js
           echo "Compiling TypeScript files..."
           # Explicitly list important TypeScript files for visibility
-          echo "Important files to compile: tanks.ts and alttanks.ts"
+          echo "Important files to compile: tanks.ts"
           npx tsc --listFiles
           if [ $? -ne 0 ]; then
-            echo "TypeScript compilation failed. Trying to continue with existing JS files."
+            echo "TypeScript compilation failed."
+            exit 1
           else
             echo "TypeScript compilation successful."
           fi
@@ -91,34 +92,28 @@ jobs:
       - name: Verify JavaScript output
         run: |
           echo "Generated JavaScript files:"
-          find ./pkg/static/js -name "*.js" | sort
-          # Check specifically for tanks.js and alttanks.js
-          if [ -f "./pkg/static/js/tanks.js" ]; then
+          find ./static/js -name "*.js" | sort
+          # Check specifically for tanks.js
+          if [ -f "./static/js/tanks.js" ]; then
             echo "✅ tanks.js successfully generated"
           else
             echo "❌ tanks.js missing"
             exit 1
           fi
-          if [ -f "./pkg/static/js/alttanks.js" ]; then
-            echo "✅ alttanks.js successfully generated"
-          else
-            echo "❌ alttanks.js missing"
-            exit 1
-          fi
           
       - name: Lint JavaScript
         run: |
-          npx eslint pkg/static/js/*.js --fix || true
+          npx eslint static/js/*.js --fix || true
           
       - name: Minify JavaScript
         run: |
-          for file in pkg/static/js/*.js; do
+          for file in static/js/*.js; do
             if [ -f "$file" ]; then
               echo "Minifying $file"
               npx terser "$file" \
                 --compress \
                 --mangle \
-                --source-map "base='pkg/static/js',root='pkg/static/js',url='$(basename "$file").map'" \
+                --source-map "base='static/js',root='static/js',url='$(basename "$file").map'" \
                 --output "${file%.js}.min.js"
               if [ -f "${file%.js}.min.js" ]; then
                 mv "${file%.js}.min.js" "$file"
@@ -146,14 +141,9 @@ jobs:
           
       - name: Compile Sass
         run: |
-          mkdir -p pkg/static/css
-          if [ -f "pkg/static/sass/tanks.scss" ]; then
-            sass pkg/static/sass/tanks.scss:pkg/static/css/tanks.css
-          fi
-          if [ -f "pkg/static/sass/alt.scss" ]; then
-            sass pkg/static/sass/alt.scss:pkg/static/css/alt.css
-          else
-            echo "Note: pkg/static/sass/alt.scss not found - skipping compilation"
+          mkdir -p static/css
+          if [ -f "static/sass/tanks.scss" ]; then
+            sass static/sass/tanks.scss:static/css/tanks.css
           fi
           
       - name: Setup Pages
