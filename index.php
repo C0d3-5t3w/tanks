@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rasta Tanks</title>
+    <title>Tanks</title>
     <link rel="stylesheet" href="static/css/tanks.css">
 </head>
 <body>
     <div class="game-container">
-        <h1>Rasta Tanks</h1>
+        <h1>Tanks</h1>
         <div class="game-info">
             <div class="score player1">Player 1: <span id="score1">0</span></div>
             <div class="score player2">Player 2: <span id="score2">0</span></div>
