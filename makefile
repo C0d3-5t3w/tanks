@@ -3,8 +3,8 @@ MAIN_PATH=cmd/main/main.go
 all: clean go php ts sass run 
 
 clean:
-	@rm -rf /static/css
-	@rm -rf /static/js
+	@rm -rf static/css
+	@rm -rf static/js
 	@rm -rf tsconfig.json
 	@rm -rf package-lock.json
 	@rm -rf /pages/*.html
