@@ -172,7 +172,7 @@ class Game {
     
     createObstacles(): void {
         
-        for (let i = 0; i < 5; i++) {
+        for (let i = 0; i < 20; i++) {
             const position = {
                 x: Math.random() * (this.canvas.width - 100) + 50,
                 y: Math.random() * (this.canvas.height - 100) + 50
