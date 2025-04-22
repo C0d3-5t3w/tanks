@@ -55,19 +55,13 @@ jobs:
         run: |
           npx sass static/sass:static/css --style compressed
           
-      - name: Archive built files
-        uses: actions/upload-artifact@v1
-        with:
-          name: github-pages
-          path: .
-      
       - name: Setup Pages
-        uses: actions/configure-pages@v2
+        uses: actions/configure-pages@v3
         
-      - name: Upload GitHub Pages artifact
+      - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: .
+          path: .  # includes index.html, static/js, static/css
           
   deploy:
     environment:
