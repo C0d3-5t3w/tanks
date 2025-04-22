@@ -56,7 +56,7 @@ jobs:
           npx sass static/sass:static/css --style compressed
           
       - name: Archive built files
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v1
         with:
           name: github-pages
           path: .
